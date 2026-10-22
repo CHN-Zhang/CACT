@@ -1,0 +1,636 @@
+[
+  {
+    "name": "00_true_main.cact",
+    "group": "official",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "01_false_hex_num.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "02_true_octo.cact",
+    "group": "official",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "03_false_bracket.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "04_true_multi_dim_array.cact",
+    "group": "official",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "05_false_number.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "06_false_hex_num.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "07_false_global_exp.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "08_false_int_num_decl.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "09_false_val_name.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "10_false_array_visit.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "11_false_if_else.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "12_true_comment.cact",
+    "group": "official",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "13_false_nested_comment.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "14_true_sample.cact",
+    "group": "official",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "15_true_syntax_false_semantic.cact",
+    "group": "official",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "16_false_if_else.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "17_true_multi_dim_fparam.cact",
+    "group": "official",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "18_false_continuous_equation.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "19_false_val_init.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "20_false_val_init_op.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "21_false_token.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "22_true_func.cact",
+    "group": "official",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "23_false_val_init_func.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "24_false_array_size_func.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "25_false_nested_func_def.cact",
+    "group": "official",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "26_true_multi_dim_const.cact",
+    "group": "official",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "minimal",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "integers",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "floats",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "characters",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "arrays",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "parameters",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "operators",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "condition",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "arithmetic_in_condition",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "dangling_else",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "loop",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "calls",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "comments",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "keyword_prefix",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "empty_statement",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "syntax_only",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "empty_file",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "comment_only",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "trailing_character",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "trailing_identifier",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "missing_semicolon",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "missing_brace",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "missing_paren",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "incomplete_expr",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "hex_no_digits",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "hex_bad_digit",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "bad_octal",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "integer_suffix",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "integer_separator",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "float_integer_suffix",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "float_missing_exp",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "float_no_digits",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "bad_identifier",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "reserved_identifier",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "string",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "empty_char",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "long_char",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "unicode_char",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "bad_escape",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "unterminated_char",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "unterminated_comment",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "nested_comment",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "initializer_variable",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "initializer_expression",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "initializer_call",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "dimension_expression",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "dimension_identifier",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "unsized_variable",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "unsized_inner_parameter",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "function_prototype",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "nested_function",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "chained_assignment",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "comparison_assignment",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "logic_in_return",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "comma_expression",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "array_comma",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "for_loop",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "increment",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "double_type",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "const_missing_init",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "initializer_trailing_comma",
+    "group": "boundary",
+    "expected_valid": false,
+    "returncode": 1,
+    "passed": true
+  },
+  {
+    "name": "no_argument",
+    "group": "cli",
+    "passed": true,
+    "returncode": 2
+  },
+  {
+    "name": "extra_argument",
+    "group": "cli",
+    "passed": true,
+    "returncode": 2
+  },
+  {
+    "name": "missing_file",
+    "group": "cli",
+    "passed": true,
+    "returncode": 2
+  }
+]

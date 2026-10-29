@@ -2,7 +2,7 @@ grammar CACT;
 compUnit: (decl | funcDef)+ EOF;
 decl: constDecl | varDecl;
 constDecl: CONST bType constDef (COMMA constDef)* SEMI;
-bType: INT | FLOAT | CHAR;
+bType: INT | FLOAT | DOUBLE | CHAR;
 constDef: IDENT (LBRACKET INT_CONST RBRACKET)* ASSIGN constInitVal;
 constInitVal: constant | LBRACE (constInitVal (COMMA constInitVal)*)? RBRACE;
 constant: (PLUS | MINUS)? (INT_CONST | FLOAT_CONST) | CHAR_CONST;

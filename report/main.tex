@@ -1,0 +1,119 @@
+\documentclass[UTF8,a4paper,11pt]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,columns=fullflexible}
+\title{编译原理研讨课实验报告\\[0.4em]\large 实验二 PR001：CACT 词法与语法分析}
+\author{组号：1\\成员及分工：韩旭成(组长)，张高翔}
+\date{}
+\begin{document}
+\maketitle
+\section{任务说明}
+本次实验的目标是根据 CACT 语言规范编写 ANTLR 文法，生成 C++ 词法和语法分析器，并将它们组织成一个简单的编译器前端。程序从命令行接收源文件路径：输入没有词法、语法错误时返回 0，否则返回非零值。本阶段主要完成词法与语法检查，语义分析、中间表示和代码生成将在后续实验中实现。
+
+\section{分工}
+\begin{itemize}[leftmargin=2em]
+  \item 韩旭成（组长）：负责阅读 CACT 语言规范，设计词法规则和语法规则，完成声明、函数、控制语句及表达式优先级等文法的实现。
+  \item 张高翔：负责程序入口和错误处理、测试用例运行与结果整理，配置本地及集群实验环境，并整理实验报告与项目文档。
+\end{itemize}
+
+\section{实验设计}
+\subsection{设计思路}
+分析流程为：源文件 $\rightarrow$ \texttt{ANTLRInputStream} $\rightarrow$ \texttt{CACTLexer}，再经 \texttt{CommonTokenStream} 交给 \texttt{CACTParser}，最终得到退出状态。CMake 调用课程提供的 ANTLR 4.13.1 生成器，根据 \texttt{CACT.g4} 生成分析器和 Visitor 接口，并与配套 C++ runtime 编译链接。生成文件存放于构建目录，文法修改后自动重新生成。
+
+\subsection{词法分析}
+编写词法规则时，我们把关键字规则放在标识符规则之前。这样，当两条规则匹配到相同长度的文本时，\texttt{if} 等关键字会被优先识别为关键字，而不是普通标识符。标识符以 ASCII 字母或下划线开头，后续可包含数字。整数支持十进制、八进制和十六进制；非零十进制整数不允许前导零。浮点数支持小数点形式和指数形式及可选的 \texttt{f/F} 后缀；单纯整数加 \texttt{f} 不构成浮点数。数值前的正负号由文法处理，指数内部的符号属于浮点词法单元。
+
+字符常量包含一个 ASCII 字符或支持的转义序列，拒绝空字符、多字符、未知转义和非 ASCII 字符。单行注释可在文件末尾结束；多行注释在首次出现结束符时结束，不支持嵌套。
+
+\subsection{语法设计与表达式优先级}
+我们将编译单元写成一个或多个声明或函数定义，并在末尾匹配文件结束符，确保整个输入文件都参与检查。声明初值采用常量字面量与递归初始化列表；数组声明维度采用整数字面量。函数形参最外层数组维度可以省略，内层维度需要给出。
+
+为了在文法中体现运算符优先级，我们将算术表达式依次分为 \texttt{primaryExp}、\texttt{unaryExp}、\texttt{mulExp} 和 \texttt{addExp}。乘除取余高于加减，同级循环体现左结合，一元规则递归体现右结合。条件表达式进一步划分关系、相等、逻辑与、逻辑或层级；逻辑非处于一元运算层级。赋值单独建模为语句，不支持连续赋值或逗号表达式。普通表达式与条件表达式分开，\texttt{else} 就近匹配未匹配的 \texttt{if}。
+
+\subsection{错误处理}
+主程序先检查参数个数及文件是否可打开。词法分析器和语法分析器共用错误监听器，记录错误并输出位置及诊断信息。调用 \texttt{tokens.fill()} 扫描完整文件，以发现尾部非法字符，再解析匹配 EOF 的编译单元。
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+情况 & 退出状态\\
+\midrule
+词法、语法均正确 & 0\\
+词法或语法错误 & 1\\
+参数、文件或其他分析异常 & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+这里需要注意，ANTLR 遇到语法错误后可能尝试恢复并继续分析。如果只看解析函数是否正常返回，就可能把错误输入误判为正确。因此，程序在结束前还会检查监听器状态和解析器的错误计数。
+
+\subsection{规范取舍}
+课程规范中有关初始化的文法与示例存在不完全一致的地方。实现时，我们结合文字说明和公开样例，将初值限制为字面量及初始化列表，拒绝使用变量、函数调用或算术表达式作为初值。\texttt{return} 语句要求分号；十进制整数支持多位。按照小组要求，我们将 \texttt{double} 加入基本类型规则，使其可以用于变量、数组、函数返回值和形参。课程规范正文只列出三种基本类型，因此这是一项文法扩展，是否适用于最终评分仍需结合课程后续要求确认。类型匹配留待后续语义分析。
+
+\subsection{关键代码与分析}
+\textbf{基本类型和声明规则。} \texttt{bType} 被变量声明、常量声明、函数返回类型和形参复用，因此在这一处加入 \texttt{DOUBLE} 后，这些位置都能识别 \texttt{double}：
+\begin{lstlisting}
+bType: INT | FLOAT | DOUBLE | CHAR;
+varDecl: bType varDef (COMMA varDef)* SEMI;
+funcDef: funcType IDENT LPAREN funcFParams? RPAREN block;
+funcType: VOID | bType;
+\end{lstlisting}
+
+\textbf{表达式优先级。} 以下规则让乘、除、取余先于加减结合。同一层级通过循环处理连续运算：
+\begin{lstlisting}
+mulExp: unaryExp ((MUL | DIV | MOD) unaryExp)*;
+addExp: mulExp ((PLUS | MINUS) mulExp)*;
+\end{lstlisting}
+
+\textbf{完整输入与错误返回。} 编译单元要求匹配 EOF，主程序先填充 token 流，再检查词法错误并进行语法分析。这样可以检测合法程序后面的非法字符，也不会把语法错误恢复后的正常返回误认为成功：
+\begin{lstlisting}
+compUnit: (decl | funcDef)+ EOF;
+\end{lstlisting}
+\begin{lstlisting}
+tokens.fill();
+if (errors.failed) return 1;
+CACTParser parser(&tokens);
+parser.removeErrorListeners();
+parser.addErrorListener(&errors);
+parser.compUnit();
+return errors.failed || parser.getNumberOfSyntaxErrors() != 0 ? 1 : 0;
+\end{lstlisting}
+
+\section{实验实现与结果}
+\subsection{实验环境}
+本地环境为 Ubuntu 24.04 WSL、G++ 13.3.0、Java 17 和 CMake 3.28.3；ANTLR 生成器与 C++ runtime 均为 4.13.1。课程集群使用 G++ 11.4.0、Java 17 和 CMake 3.22.1。
+
+\subsection{测试结果}
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+测试类别 & 更新后本地通过数 & 更新前集群通过数\\
+\midrule
+公开词法语法样例 & 27/27 & 27/27\\
+独立边界用例 & 64/64 & 61/61\\
+命令行用例 & 3/3 & 3/3\\
+\midrule
+合计 & 94/94 & 91/91\\
+\bottomrule
+\end{tabular}
+\end{center}
+加入 \texttt{double} 后，我们在本地使用课程原有测试脚本运行了 27 个公开样例，没有出现误判；另外检查了 \texttt{double} 变量、数组、函数和错误形参。集群结果对应更新前的版本，更新后尚未在集群复测。逐项记录见项目中的 \texttt{test-results-local.json} 和 \texttt{test-results-cluster.json}。隐藏测试未在当前环境验证。
+
+\subsection{复现方法}
+\begin{lstlisting}
+cmake -S . -B build
+cmake --build build -j 4
+cd test
+bash test_syntax.sh
+\end{lstlisting}
+课程脚本逐一调用编译器；若实际退出状态与样例名称中的预期不符，输出 \texttt{**Error!}。也可在仓库根目录执行 \texttt{./build/compiler input.cact}，随后用 \texttt{echo \$?} 查看退出状态。
+
+\section{总结}
+通过本次实验，我们完成了从编写 CACT 文法、生成分析器到构建和测试程序的基本流程。表达式优先级需要在文法中分层描述；错误处理则需要同时考虑词法分析、语法分析和 ANTLR 的错误恢复。公开样例和补充用例均已通过，但隐藏测试仍有待课程环境验证。后续实验可以在此基础上使用 Visitor 接口，实现符号表、类型和控制流检查。
+
+
+\end{document}

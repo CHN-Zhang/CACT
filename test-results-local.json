@@ -597,6 +597,27 @@
   {
     "name": "double_type",
     "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "double_array",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "double_function",
+    "group": "boundary",
+    "expected_valid": true,
+    "returncode": 0,
+    "passed": true
+  },
+  {
+    "name": "double_bad_parameter",
+    "group": "boundary",
     "expected_valid": false,
     "returncode": 1,
     "passed": true

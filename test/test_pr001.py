@@ -66,7 +66,10 @@ CASES = [
     ("array_comma", False, "void f(){a[1,2]=0;}"),
     ("for_loop", False, "void f(){for(;;);}"),
     ("increment", False, "void f(){a++;}"),
-    ("double_type", False, "double a=1.0;"),
+    ("double_type", True, "double a=1.0;"),
+    ("double_array", True, "const double a[2]={1.0,2.0};"),
+    ("double_function", True, "double f(double x){return x;}"),
+    ("double_bad_parameter", False, "double f(double){return 1.0;}"),
     ("const_missing_init", False, "const int a;"),
     ("initializer_trailing_comma", False, "int a[2]={1,2,};"),
 ]

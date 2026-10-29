@@ -1,69 +1,62 @@
-# 实验二 CACT 编译器 PR001
+# CACT 编译器实验
 
-本项目实现 CACT 词法与语法检查，基于课程 CACT-PR0-2026S 框架和 ANTLR 4.13.1。
-Java 生成器与 C++ runtime 随源码提供，首次构建不需要下载第三方依赖。
+本项目基于课程 CACT 框架，使用 ANTLR 4.13.1 实现 CACT 语言的词法和语法分析。
 
-## 构建与运行
+目前已完成 **PR001** 的分析器、命令行接口和公开样例测试。PR002 的语义分析、IR 与解释执行，以及 PR003 的 RISC-V 代码生成尚未实现。
 
-需要 Linux、C++17 编译器、Java 11+、CMake 3.16+；测试脚本需要 Python 3。
+## 环境要求
+
+- Linux 环境（Windows 可使用 WSL）
+- 支持 C++17 的编译器、CMake 3.16 或更高版本
+- Java 11 或更高版本
+- Python 3（用于运行测试）
+
+ANTLR 4.13.1 的生成器和 C++ runtime 已包含在 `deps/` 中。
+
+## 构建和运行
+
+在仓库根目录执行：
 
 ```bash
 cmake -S . -B build
 cmake --build build -j 4
 ./build/compiler test/samples_lex_and_syntax/00_true_main.cact
 echo $?
+```
+
+编译器接收一个 CACT 源文件路径。词法、语法正确时返回 `0`，词法或语法错误返回 `1`，参数、文件或其他分析异常返回 `2`。诊断信息输出到标准错误，包含行号和列号。
+
+## 测试
+
+```bash
 ctest --test-dir build --output-on-failure
 ```
 
-也可以运行课程原测试脚本：
+也可以直接运行测试脚本并保存逐项结果：
 
 ```bash
-cd test
-bash test_syntax.sh
+python3 test/test_pr001.py build/compiler results.json
 ```
 
-Windows 用户使用已部署的 D 盘 CompilerLab WSL 环境，在 PowerShell 中执行本目录的 `build.ps1`。
-构建产物放在 Linux `/opt/compiler-lab/build/pr001`，实际磁盘位于 D 盘。
+现有记录中，本地和课程集群均通过 27 个公开样例、61 个边界用例及 3 个命令行用例，合计 91 项。隐藏样例尚未在本地验证。测试范围和环境详见 [TESTING.md](TESTING.md)。
 
-```powershell
-.\build.ps1
-wsl -d CompilerLab -- /opt/compiler-lab/build/pr001/compiler /mnt/e/编译原理lab/hw1/CACT-PR001/test/samples_lex_and_syntax/00_true_main.cact
-```
+## PR001 实现范围
 
-## 接口与范围
+支持关键字、标识符、常量、注释，变量和常量声明、多维数组、函数定义及调用，以及控制语句、算术表达式和条件表达式。程序检查完整输入并匹配文件结束符；赋值作为语句处理，不支持连续赋值。
 
-`compiler <source.cact>`：正确输入返回 0，词法或语法错误返回 1；参数、文件或其他分析异常返回 2。
-诊断写入 stderr，包含从 1 开始的行号、列号。程序会读取完整文件并匹配 EOF。
+本阶段不检查标识符定义、类型匹配和 `break` 所处上下文等语义问题。课程规范中初始化相关描述存在不一致，当前实现结合说明和公开样例，允许字面量及嵌套初始化列表，拒绝使用变量、函数调用或算术表达式作为声明初值。其他取舍见 [实验报告](实验报告.md)。
 
-支持声明、字面量初始化、多维数组、函数定义和调用、控制流、算术表达式及条件表达式。
-赋值、普通表达式、条件表达式分别建模；不支持赋值表达式和连续赋值。
-声明初值只接受常量字面量（数值可带正负号）及嵌套列表，数组维度只接受整数字面量。
-条件中支持括号分组与逻辑非；逻辑非与算术一元运算同级，高于乘除。
-`else` 由 ANTLR 的可选分支优先匹配到最近的未匹配 `if`。
+## 项目结构
 
-不进行符号表、类型匹配、函数是否定义、break 所处上下文等 PR002 语义检查。
-不生成 IR 或 RISC-V 汇编。
+| 路径 | 内容 |
+| --- | --- |
+| `grammar/CACT.g4` | CACT 词法与语法规则 |
+| `src/main.cpp` | 文件输入与错误处理 |
+| `deps/` | ANTLR 生成器和 C++ runtime |
+| `test/samples_lex_and_syntax/` | 课程公开词法语法样例 |
+| `test/test_pr001.py` | 公开样例、边界和命令行测试 |
+| `TESTING.md` | 测试记录与限制 |
+| `实验报告.md` | PR001 实验报告草稿 |
+| `README.course.md` | 课程原始框架说明 |
 
-## 规范取舍
-
-课程规范中的初始化文法与例子不完全一致；按文字说明及公开样例执行严格字面量初始化。
-`return` 按正常语句要求分号；十进制整数允许多位。
-关键字表中的 `double` 保留为关键字，但基本类型按 BType 只支持 int、float、char。
-无 f 后缀的十进制浮点格式在词法阶段接受；赋值类型是否匹配留待 PR002。
-这些选择均写入边界测试，便于后续按课程澄清调整。
-
-## 文件
-
-- `grammar/CACT.g4`：语言文法；ANTLR 生成文件位于 build/generated，不手工修改。
-- `src/main.cpp`：文件输入、词法及语法错误处理。
-- `test/test_pr001.py`：自动检查公开样例、边界输入和命令行行为。
-- `test-results-local.json`、`test-results-cluster.json`：本地与集群逐项验证结果，两端均 91/91 通过。
-- `TESTING.md`：验证范围与限制。
-- `实验报告.md`：技术报告，组号、成员和分工需按真实信息补齐。
-- `README.course.md`：保留的课程原始说明，包含后续实验信息。
-
-`grammar/Hello.g4` 是保留的课程入门示例，不参与当前 compiler 构建。
-
-集群最终源码位于 `/root/compiler-lab/pr001-final/CACT-PR001`，独立 Release 编译器位于
-`/root/compiler-lab/pr001-final-build/compiler`。已使用集群 G++ 11.4.0 完成构建和全部测试。
-
+`grammar/Hello.g4` 是课程入门示例，当前编译器使用 `CACT.g4`。ANTLR 生成的分析器文件位于构建目录，不需要手工修改。

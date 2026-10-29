@@ -67,7 +67,3 @@ wsl -d CompilerLab -- /opt/compiler-lab/build/pr001/compiler /mnt/e/编译原理
 集群最终源码位于 `/root/compiler-lab/pr001-final/CACT-PR001`，独立 Release 编译器位于
 `/root/compiler-lab/pr001-final-build/compiler`。已使用集群 G++ 11.4.0 完成构建和全部测试。
 
-## 提交
-
-尚未创建远程仓库或提交到课程平台。按任务书创建小组 CACT 仓库，推送完整源码并标记 `CACT-PR1`。
-提交前补全报告的组号与成员信息；隐藏测试需要课程验收环境，当前不能声称已通过。
